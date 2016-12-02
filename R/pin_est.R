@@ -6,10 +6,14 @@
 #' \code{\link{nlminb}} function in the \pkg{stats} package is used for maximization.
 #' In the literature, at least data for 60 trading days is recommended to ensure convergence of optimization.
 #' No information about the trading days' dates is needed.
-#' Vectors for \code{numbuys} and \code{numsells} need to have same length.
+#' Vectors for \code{numbuys} and \code{numsells} need to have same length. \cr
+#' Calculation of confidence interval for the probability of informed trading is disabled by default.
+#' For more details see \code{\link{pin_est_core}}
 #'
 #' @inheritParams pin_ll
 #' @inheritParams pin_est_core
+#' @inheritParams pin_confint
+#' @param ci_control \emph{list} see \code{\link{pin_est_core}}
 #'
 #' @seealso \code{\link{nlminb}},
 #'          \code{\link{initial_vals}}
@@ -29,7 +33,7 @@
 #'
 #' Easley, David et al. (2010) \cr
 #' Factoring Information into Returns \cr
-#' \emph{Journal of Financial and Quantitative Analysis}, Volume 45, Issue 2, pp. 293 - 309
+#' \emph{Journal of Financial and Quantitative Analysis}, Volume 45, Issue 2, pp. 293 - 309 \cr
 #' \doi{10.1017/S0022109010000074}
 #'
 #' Ersan, Oguz and Alici, Asli (2016) \cr
@@ -42,7 +46,7 @@
 #' using hierarchical agglomerative clustering \cr
 #' \emph{Quantitative Finance}, Volume 15, Issue 11, pp. 1805 - 1821 \cr
 #' \doi{10.1080/14697688.2015.1023336}
-#' 
+#'
 #' Lin, Hsiou-Wei William and Ke, Wen-Chyan (2011) \cr
 #' A computing bias in estimating the probability of informed trading \cr
 #' \emph{Journal of Financial Markets}, Volume 14, Issue 4, pp. 625 - 640 \cr
@@ -54,7 +58,7 @@
 #' \doi{10.1016/j.jbankfin.2011.08.003}
 #'
 #' @return
-#' A list with seven components:
+#' A list with the following components:
 #' \describe{
 #' \item{Results}{Matrix containing the parameter estimates as well as their estimated standard errors,
 #'  t-values and p-values.}
@@ -64,21 +68,24 @@
 #'  \item{message}{Convergence message returned by the nlminb optimizer}
 #'  \item{iterations}{Number of iterations until convergence of nlminb optimizer}
 #'  \item{init_vals}{Vector of initial values}
+#'  \item{confint}{If \code{confint = TRUE}; confidence interval for the probability of informed trading}
 #'  }
 #'
 #' @examples
 #' # Loading simulated data for frequently traded stock
-#' 
+#'
 #' data("BSfrequent")
-#' 
+#'
 #' # Optimization with HAC initial values and Lin-Ke likelihood factorization
-#' 
+#'
 #' pin_freq <- pin_est(numbuys = BSfrequent[,"Buys"],
 #'                     numsells = BSfrequent[,"Sells"])
 #' @export
 
 pin_est <- function(numbuys = NULL, numsells = NULL,
-                    lower = rep(0,5), upper = c(1,1,rep(Inf,3))) {
+                    lower = rep(0,5), upper = c(1,1,rep(Inf,3)),
+                    confint = FALSE,
+                    ci_control = list()) {
   if(is.null(numbuys)) stop("Missing data for 'numbuys'")
   if(is.null(numsells)) stop("Missing data for 'numsells'")
 
@@ -88,7 +95,7 @@ pin_est <- function(numbuys = NULL, numsells = NULL,
                       factorization = "Lin_Ke",
                       init_vals = init_vals, lower = lower, upper = upper,
                       num_best_res = 1,
-                      only_converged = TRUE)
-
+                      only_converged = TRUE,
+                      confint = confint, ci_control = ci_control)
   res
 }

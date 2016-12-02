@@ -10,7 +10,7 @@
 #' In total, two different likelihood factorizations and three methodologies generating starting values are implemented.
 #' The probability of informed trading can be estimated for arbitrary length of daily buys and sells data with
 #' \code{\link{pin_est}} function which is a wrapper around the workhorse function \code{\link{pin_est_core}}.
-#' No information about the time span of the underlying data is needed to perform optimizations.
+#' No information about the time span of the underlying data is required to perform optimizations.
 #' However, recommendation given in the literature is using at least data for 60 trading days to ensure convergence of the
 #' likelihood maximization.
 #' The \code{\link{qpin}} function delivers quarterly estimates.
@@ -22,6 +22,7 @@
 #'  \item{\code{\link{initial_vals}}}{Generating initial values by brute force grid search, hierarchical agglomerative clustering algorithm or
 #'                                    refined hierarchical agglomerative clustering technique.}
 #'  \item{\code{\link{pin_calc}}}{Computing the probability of informed trading (PIN).}
+#'  \item{\code{\link{pin_confint}}}{Calculation of confidence intervals for the probability of informed trading.}
 #'  \item{\code{\link{pin_est_core}}}{Core function of maximization routines for PIN likelihood function. It grants the most control over optimization procedure.
 #'                                  However, the settings chosen in \code{\link{pin_est}} will be sufficient in most applications.}
 #'  \item{\code{\link{pin_est}}}{User-friendly wrapper around \code{\link{pin_est_core}}. Default method for creating initial values is set to
@@ -32,6 +33,7 @@
 #'  \item{\code{\link{qpin}}}{Returns quarterly estimates, function is a wrapper around \code{\link{pin_est}} and
 #'                            inherits its optimization settings.}
 #'  \item{\code{\link{qpin_plot}}}{Visualization method for results of \code{\link{qpin}}.}
+#'  \item{\code{\link{simulateBS}}}{Simulate datasets of aggregated daily buys and sells.}
 #' }
 #'
 #' @section Datasets:
@@ -61,7 +63,7 @@
 #' Liquidity, Information, and Infrequently Traded Stocks\cr
 #' \emph{The Journal of Finance}, Volume 51, Number 4, pp. 1405 - 1436 \cr
 #' \doi{10.1111/j.1540-6261.1996.tb04074.x}
-#' 
+#'
 #' Easley, David et al. (2010) \cr
 #' Factoring Information into Returns \cr
 #' \emph{Journal of Financial and Quantitative Analysis}, Volume 45, Issue 2, pp. 293 - 309 \cr
@@ -80,7 +82,8 @@
 #'
 #' Grolemund, Garett and Wickham, Hadley (2011) \cr
 #' Dates and Times Made Easy with lubridate \cr
-#' \emph{Journal of Statistical Software}, Volume 40, Issue 3, pp. 1 - 25
+#' \emph{Journal of Statistical Software}, Volume 40, Issue 3, pp. 1 - 25 \cr
+#' \doi{10.18637/jss.v040.i03}
 #'
 #' Lin, Hsiou-Wei William and Ke, Wen-Chyan (2011) \cr
 #' A computing bias in estimating the probability of informed trading \cr

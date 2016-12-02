@@ -1,0 +1,56 @@
+## Examples
+The `pinbasic` packages is equipped with four synthetic datasets of daily buys and sells, 
+`BSinfrequent`, `BSfrequent`, `BSfrequent2015` and `BSheavy`. 
+The represent infrequently, frequently and heavily traded equities, respectively. 
+The datasets `BSinfrequent`, `BSfrequent` and `BSheavy` cover 60 trading days, whereas 
+`BSfrequent2015` contains simulated daily buys and sells for the business days in 2015. 
+The datasets can be loaded with the `data` function.
+
+```{r dataloading}
+data("BSinfrequent")
+data("BSfrequent")
+data("BSfrequent2015")
+data("BSheavy")
+
+summary(BSinfrequent)
+summary(BSfrequent)
+summary(BSfrequent2015)
+summary(BSheavy)
+```
+
+We can use the `pin_est` function to estimate $\pintext$ for each dataset. 
+Examplary, we estimate the probability of informed trading for `BSheavy`.
+
+```{r pinest}
+# using default values for lower and upper bounds, disabled confidence interval computation
+pin_bsheavy <- pin_est(numbuys = BSheavy[,"Buys"], numsells = BSheavy[,"Sells"])
+
+# convert matrix to data.frane for nicer output
+as.data.frame(pin_bsheavy$Results)
+```
+
+If we want quarterly $\pintext$ estimates but have more than one quarter in our data, we can use the `qpin` function which 
+takes care of automatic splitting. 
+The `BSfrequent2015` dataset covers four quarters and a total of `r nrow(BSfrequent2015)` trading days. 
+The trading days' dates are stored in the rownames, so they can be passed to the `dates` argument of `qpin`.
+
+```{r qpin}
+# dates stored in rownames of dataset
+head(rownames(BSfrequent2015))
+
+# quarterly PIN estimates
+qpin2015 <- qpin(numbuys = BSfrequent2015[,"Buys"],
+                 numsells = BSfrequent2015[,"Sells"],
+                 dates = as.Date(rownames(BSfrequent2015), format = "%Y-%m-%d"))
+
+# list of length 4 is returned
+names(qpin2015)
+
+# each list element has the same structure as returns from pin_est function
+# convert matrices to data.frames for nicer output
+qpin2015_res <- lapply(qpin2015, function(x) as.data.frame(x$Results))
+
+qpin2015_res[[1]]
+qpin2015_res[[4]]
+```
+

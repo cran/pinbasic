@@ -6,7 +6,8 @@
 \usage{
 pin_est_core(numbuys = NULL, numsells = NULL, factorization = c("Lin_Ke",
   "EHO"), init_vals = NULL, lower = rep(0, 5), upper = c(1, 1, rep(Inf,
-  3)), num_best_res = 1, only_converged = TRUE)
+  3)), num_best_res = 1, only_converged = TRUE, confint = FALSE,
+  ci_control = list())
 }
 \arguments{
 \item{numbuys}{\emph{numeric} vector of daily buys}
@@ -28,9 +29,14 @@ only relevant if \code{init_vals} = 'Grid', defaults to 1}
 
 \item{only_converged}{\emph{logical} Return only results for which the likelihood converged?
 Defaults to \code{TRUE}}
+
+\item{confint}{\emph{logical} Compute confidence intervals for PIN?
+Defaults to \code{FALSE}}
+
+\item{ci_control}{\emph{list} see \strong{Details}}
 }
 \value{
-If \code{num_best_res} = 1, a list with seven elements is returned:
+If \code{num_best_res} = 1, a list with following elements is returned:
 \describe{
 \item{Results}{Matrix containing the parameter estimates as well as their estimated standard errors,
  t-values and p-values.}
@@ -40,6 +46,7 @@ If \code{num_best_res} = 1, a list with seven elements is returned:
  \item{message}{Convergence message returned by the nlminb optimizer}
  \item{iterations}{Number of iterations until convergence of nlminb optimizer}
  \item{init_vals}{Vector of initial values}
+ \item{confint}{If \code{confint = TRUE}; confidence interval for the probability of informed trading}
  }
 
  If \code{num_best_res} > 1, a named list of lists is returned. Each component of the outer list
@@ -53,8 +60,16 @@ Core function for optimization routines
 Grants the most control over optimization procedure.
 User-friendly wrappers for estimation with trading data of arbitrary length and quarterly data
 are implemented with \code{\link{pin_est}} and \code{\link{qpin}}, respectively.
-\code{\link{nlminb}} function in the \pkg{stats} package is used for maximization. 
-Vectors for \code{numbuys} and \code{numsells} need to have same length.
+\code{\link{nlminb}} function in the \pkg{stats} package is used for maximization.
+Vectors for \code{numbuys} and \code{numsells} need to have same length. \cr \cr
+Confidence intervals for the probability of informed trading are calculated via Monte-Carlo-Simulation
+if \code{confint = TRUE}. Settings of the confidence interval simulation can be specified via a named list for \code{ci_control}.
+Valid list names are \code{n}, \code{seed}, \code{level} and \code{ncores} which pass
+number of simulation runs (default 10000), seed for RNG (default 123), confidence level (default 0.95) and number of cpu cores utilized.
+Confidence interval simulations may be slow on older or single-core machines.
+To run simulations in parallel, packages \pkg{foreach}, \pkg{doParallel} as well as \pkg{parallel} must be installed.
+If \code{ncores} is not set by the user, \code{\link[parallel]{detectCores}} function from \pkg{parallel} package is used to get
+number of available cores.
 }
 \examples{
 # Loading simulated data for frequently traded stock
@@ -71,27 +86,35 @@ inits_hac <- initial_vals(numbuys = BSfrequent[,"Buys"],
                           numsells = BSfrequent[,"Sells"],
                           method = "HAC")
 
-inits_hac_ref <- initial_vals(numbuys = BSfrequent[,"Buys"], 
+inits_hac_ref <- initial_vals(numbuys = BSfrequent[,"Buys"],
                               numsells = BSfrequent[,"Sells"],
                               method = "HAC_Ref")
 
 # Optimization with different matrices of initial values
 
-pin_core_grid <- pin_est_core(numbuys = BSfrequent[,"Buys"], 
+pin_core_grid <- pin_est_core(numbuys = BSfrequent[,"Buys"],
                               numsells = BSfrequent[,"Sells"],
                               factorization = "Lin_Ke", init_vals = inits_grid,
                               lower = rep(0,5), upper = c(1,1, rep(Inf,3)),
                               num_best_res = 5)
 
-pin_core_hac <- pin_est_core(numbuys = BSfrequent[,"Buys"], 
+pin_core_hac <- pin_est_core(numbuys = BSfrequent[,"Buys"],
                              numsells = BSfrequent[,"Sells"],
                              factorization = "Lin_Ke", init_vals = inits_hac,
                              lower = rep(0,5), upper = c(1,1, rep(Inf,3)))
 
-pin_core_hac_ref <- pin_est_core(numbuys = BSfrequent[,"Buys"], 
+pin_core_hac_ref <- pin_est_core(numbuys = BSfrequent[,"Buys"],
                                  numsells = BSfrequent[,"Sells"],
                                  factorization = "Lin_Ke", init_vals = inits_hac_ref,
                                  lower = rep(0,5), upper = c(1,1, rep(Inf,3)))
+
+\dontrun{
+pin_core_hac <- pin_est_core(numbuys = BSfrequent[,"Buys"],
+                             numsells = BSfrequent[,"Sells"],
+                             factorization = "Lin_Ke", init_vals = inits_hac,
+                             lower = rep(0,5), upper = c(1,1, rep(Inf,3)),
+                             confint = TRUE)
+}
 }
 \references{
 Easley, David et al. (2002) \cr
@@ -106,7 +129,7 @@ Liquidity, Information, and Infrequently Traded Stocks\cr
 
 Easley, David et al. (2010) \cr
 Factoring Information into Returns \cr
-\emph{Journal of Financial and Quantitative Analysis}, Volume 45, Issue 2, pp. 293 - 309
+\emph{Journal of Financial and Quantitative Analysis}, Volume 45, Issue 2, pp. 293 - 309 \cr
 \doi{10.1017/S0022109010000074}
 
 Ersan, Oguz and Alici, Asli (2016) \cr
@@ -125,6 +148,13 @@ A computing bias in estimating the probability of informed trading \cr
 \emph{Journal of Financial Markets}, Volume 14, Issue 4, pp. 625 - 640 \cr
 \doi{10.1016/j.finmar.2011.03.001}
 
+Revolution Analytics and Steve Weston (2015) \cr
+doParallel: Foreach Parallel Adaptor for the 'parallel' Package \cr
+\emph{R package version 1.0.10}
+
+Revolution Analytics and Steve Weston (2015) \cr
+foreach: Provides Foreach Looping Construct for R \cr
+\emph{R package version 1.4.3}
 Yan, Yuxing and Zhang, Shaojun (2012) \cr
 An improved estimation method and empirical properties of the probability of informed trading \cr
 \emph{Journal of Banking & Finance}, Volume 36, Issue 2, pp. 454 - 467 \cr

@@ -5,7 +5,7 @@
 \title{Quarterly PIN estimates}
 \usage{
 qpin(numbuys = NULL, numsells = NULL, dates = NULL, lower = rep(0, 5),
-  upper = c(1, 1, rep(Inf, 3)))
+  upper = c(1, 1, rep(Inf, 3)), confint = FALSE, ci_control = list())
 }
 \arguments{
 \item{numbuys}{\emph{numeric} vector of daily buys}
@@ -17,6 +17,11 @@ qpin(numbuys = NULL, numsells = NULL, dates = NULL, lower = rep(0, 5),
 \item{lower}{\emph{numeric} lower bounds for optimization, must have length of 5}
 
 \item{upper}{\emph{numeric} upper bounds for optimization, must have length of 5}
+
+\item{confint}{\emph{logical} Compute confidence intervals for PIN?
+Defaults to \code{FALSE}}
+
+\item{ci_control}{\emph{list} see \code{\link{pin_est_core}}}
 }
 \value{
 A list of lists. The length of the outer list equals the number of available quarters in the data.
@@ -31,6 +36,7 @@ The inner list is structured as follows:
  \item{message}{Convergence message returned by the nlminb optimizer}
  \item{iterations}{Number of iterations until convergence of nlminb optimizer}
  \item{init_vals}{Vector of initial values}
+ \item{confint}{If \code{confint = TRUE}; confidence interval for the probability of informed trading}
  }
 }
 \description{
@@ -38,12 +44,14 @@ Estimation of model parameters and probability of informed trading for quarterly
 }
 \details{
 Wrapper around \code{\link{pin_est}} function and therefore inherits its settings for optimization.
-Data is splitted into quarters with the \code{\link[lubridate]{quarter}} function from \pkg{lubridate} package.
+Data is split into quarters with the \code{\link[lubridate]{quarter}} function from \pkg{lubridate} package.
 According to the help page of this function \code{dates} argument must be \cr
 \emph{a date-time object of class POSIXct, POSIXlt, Date, chron, yearmon, yearqtr, zoo, zooreg,
  timeDate, xts, its, ti, jul, timeSeries, fts or anything else that can be converted with as.POSIXlt}. \cr
-\code{\link{nlminb}} function in the \pkg{stats} package is used for maximization. 
-Vectors for \code{numbuys} and \code{numsells} need to have same length.
+\code{\link{nlminb}} function in the \pkg{stats} package is used for maximization.
+Vectors for \code{numbuys} and \code{numsells} need to have same length. \cr
+Calculation of confidence interval for the probability of informed trading is disabled by default.
+For more details see \code{\link{pin_est_core}}
 }
 \examples{
 # Loading one year of simulated daily buys and sells
@@ -70,7 +78,7 @@ Liquidity, Information, and Infrequently Traded Stocks\cr
 
 Easley, David et al. (2010) \cr
 Factoring Information into Returns \cr
-\emph{Journal of Financial and Quantitative Analysis}, Volume 45, Issue 2, pp. 293 - 309
+\emph{Journal of Financial and Quantitative Analysis}, Volume 45, Issue 2, pp. 293 - 309 \cr
 \doi{10.1017/S0022109010000074}
 
 Ersan, Oguz and Alici, Asli (2016) \cr
@@ -84,14 +92,15 @@ using hierarchical agglomerative clustering \cr
 \emph{Quantitative Finance}, Volume 15, Issue 11, pp. 1805 - 1821 \cr
 \doi{10.1080/14697688.2015.1023336}
 
+Grolemund, Garett and Wickham, Hadley (2011) \cr
+Dates and Times Made Easy with lubridate \cr
+\emph{Journal of Statistical Software}, Volume 40, Issue 3, pp. 1 - 25 \cr
+\doi{10.18637/jss.v040.i03}
+
 Lin, Hsiou-Wei William and Ke, Wen-Chyan (2011) \cr
 A computing bias in estimating the probability of informed trading \cr
 \emph{Journal of Financial Markets}, Volume 14, Issue 4, pp. 625 - 640 \cr
 \doi{10.1016/j.finmar.2011.03.001}
-
-Grolemund, Garett and Wickham, Hadley (2011) \cr
-Dates and Times Made Easy with lubridate \cr
-\emph{Journal of Statistical Software}, Volume 40, Issue 3, pp. 1 - 25
 
 Yan, Yuxing and Zhang, Shaojun (2012) \cr
 An improved estimation method and empirical properties of the probability of informed trading \cr
