@@ -80,7 +80,8 @@ qpin2015_res[[1]]
 qpin2015_res[[4]]
 
 ## ------------------------------------------------------------------------
-qpin_plot(qpin2015)
+library(ggplot2)
+ggplot(qpin2015)
 
 ## ----simBS---------------------------------------------------------------
 # getting the estimates
@@ -121,4 +122,26 @@ systime4
 ## ----compare-------------------------------------------------------------
 heavy_ci
 heavy_ci4
+
+## ----post----------------------------------------------------------------
+# Calculating posterior probabilities
+post_heavy <- posterior(param = heavy_est,
+                        numbuys = BSheavy[,"Buys"], numsells = BSheavy[,"Sells"])
+
+# Plotting                        
+ggplot(post_heavy)
+
+## ----postdates-----------------------------------------------------------
+# Corresponding parameter estimates
+freq_2015.3 <- qpin2015$'2015.3'$Results[,"Estimate"]
+
+# Subsetting data
+third_quarter <- subset(BSfrequent2015, subset = lubridate::quarter(rownames(BSfrequent2015)) == 3)
+
+# Calculating posterior probabilities
+post_third <- posterior(param = freq_2015.3, 
+                        numbuys = third_quarter[,"Buys"], numsells = third_quarter[,"Sells"])
+
+# Plotting
+ggplot(post_third)
 

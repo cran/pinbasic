@@ -1,0 +1,39 @@
+\begin{tikzpicture}[
+        boxblue/.style={rectangle,draw=black,thick, fill = mybluetikz, minimum height = 1cm},
+        boxgreen/.style={rectangle,draw=black,thick, fill = mygreen, minimum height = 1cm},
+        boxred/.style={rectangle,draw=black,thick, fill = myredtikz, minimum height = 1cm},
+]
+\foreach \x in {0}{
+    \foreach \y in {2}
+        \node[boxblue] at (\x,\y){};
+}
+\foreach \x in {1,2,...,11}{
+    \foreach \y in {2}
+        \node[boxgreen] at (\x,\y){};
+}
+\foreach \x in {12,13,...,64}{
+    \foreach \y in {2}
+        \node[boxred] at (\x,\y){};
+}
+
+\coordinate (expbegin) at (0.6,4.5);
+\coordinate (expend) at (11.4,4.5);
+\coordinate (sigbegin) at (11.6,4.5);
+\coordinate (sigend) at (64.4,4.5);
+
+\coordinate (expbegindown) at (0.6,-0.5);
+\coordinate (expenddown) at (11.4,-0.5);
+\coordinate (sigbegindown) at (11.6,-0.5);
+\coordinate (sigenddown) at (64.4,-0.5);
+
+\node[anchor=south, text = mybluetikz, align = center,yshift = 0pt] (sign) at (-6,2) {Sign};
+\node (signend) at (-0.25,2){};
+\draw[-latex, mybluetikz, very thick](sign)--(signend);
+\node[anchor=south, text = mybluetikz, align = center,yshift = 0pt] (signdown) at (-6,-1) {1 bit};
+\node (signenddown) at (-0.25,1){};
+\draw[-latex, mybluetikz, very thick](signdown)--(signenddown);
+\draw [decorate,decoration={brace,amplitude=16pt},xshift=0pt,yshift=5pt, draw = mygreen, very thick] (expbegin) -- (expend) node [mygreen ,midway,yshift = 22pt] {Exponent};
+\draw [decorate,decoration={brace,amplitude=16pt},xshift=0pt,yshift=5pt, draw = myredtikz, very thick] (sigbegin) -- (sigend) node [myredtikz ,midway,yshift = 22pt] {Mantissa};
+\draw [decorate,decoration={brace,mirror,amplitude=16pt},xshift=0pt,yshift=0pt, draw = mygreen, very thick] (expbegindown) -- (expenddown) node [mygreen ,midway,yshift = -23pt] {11 bits};
+\draw [decorate,decoration={brace,mirror,amplitude=16pt},xshift=0pt,yshift=0pt, draw = myredtikz, very thick] (sigbegindown) -- (sigenddown) node [myredtikz ,midway,yshift = -23pt] {52 bits};
+\end{tikzpicture}
