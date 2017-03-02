@@ -7,12 +7,11 @@
 simulateBS(param = NULL, seed = NULL, ndays = 60)
 }
 \arguments{
-\item{param}{\emph{numeric} (named) vector of model parameters
+\item{param}{\emph{numeric}: (named) vector of model parameters
 (valid names: \code{'alpha'}, \code{'delta'}, \code{'epsilon_b'}, \code{'epsilon_s'}, \code{'mu'}),
 length must equal 5}
 
-\item{seed}{\emph{interpretted as integer}: setting seed for RNG, defaults to \code{NULL}; for more detail see
-\code{\link[base]{set.seed}}}
+\item{seed}{\emph{interpretted as integer or \code{NULL}}: defaults to \code{NULL}, for more details see \code{\link[base]{set.seed}}}
 
 \item{ndays}{\emph{integer}: Number of trading days for which aggregated buys and sells are simulated, defaults to 60}
 }
@@ -26,4 +25,3 @@ Simulates a matrix consisting of synthetic data for daily buys and sells
 If names are not set for \code{param} or one or more of the vector names do not match the valid choices, they are internally set to
 \code{'alpha'}, \code{'delta'}, \code{'epsilon_b'}, \code{'epsilon_s'}, \code{'mu'} (in this order).
 }
-

@@ -2,7 +2,7 @@ Package: pinbasic
 Title: Fast and Stable Estimation of the Probability of Informed
         Trading (PIN)
 Type: Package
-Version: 1.0.1
+Version: 1.1.0
 Authors@R: person("Andreas", "Recktenwald", email = "a.recktenwald@mx.uni-saarland.de",
     role = c("aut", "cre"))
 Description: Utilities for fast and stable estimation of the probability of 
@@ -20,16 +20,18 @@ Description: Utilities for fast and stable estimation of the probability of
  of trading days' conditions are available. 
 Depends: R (>= 3.1)
 Imports: stats, fastcluster, lubridate, ggplot2, reshape2, scales,
-        foreach, doParallel, parallel, iterators
+        parallel, Rcpp (>= 0.12.9)
+LinkingTo: Rcpp
+NeedsCompilation: yes
 License: GPL-3 | file LICENSE
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Suggests: knitr, rmarkdown, formatR, utils
+URL: https://github.com/anre005/pinbasic/
 BugReports: https://github.com/anre005/pinbasic/issues
 VignetteBuilder: knitr
-NeedsCompilation: no
-Packaged: 2017-01-11 17:27:19 UTC; anre005
+Packaged: 2017-03-02 09:26:59 UTC; andi
 Author: Andreas Recktenwald [aut, cre]
 Maintainer: Andreas Recktenwald <a.recktenwald@mx.uni-saarland.de>
 Repository: CRAN
-Date/Publication: 2017-01-12 01:05:22
+Date/Publication: 2017-03-02 14:29:56

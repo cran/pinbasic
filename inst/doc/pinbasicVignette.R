@@ -33,7 +33,7 @@ summary(BSheavy)
 #  # confidence interval computation enabled
 #  pin_bsheavy <- pin_est(numbuys = BSheavy[,"Buys"],
 #                         numsells = BSheavy[,"Sells"],
-#                         confint = TRUE)
+#                         confint = TRUE, ci_control = list(n = 1000, seed = 123))
 
 ## ----loadpinest, echo = FALSE--------------------------------------------
 pin_bsheavy <- readRDS("../RDSfiles/pin_bsheavy.rds")

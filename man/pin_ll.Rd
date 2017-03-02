@@ -8,15 +8,15 @@ pin_ll(param = NULL, numbuys = NULL, numsells = NULL,
   factorization = c("Lin_Ke", "EHO"))
 }
 \arguments{
-\item{param}{\emph{numeric} (named) vector of model parameters
+\item{param}{\emph{numeric}: (named) vector of model parameters
 (valid names: \code{'alpha'}, \code{'delta'}, \code{'epsilon_b'}, \code{'epsilon_s'}, \code{'mu'}),
 length must equal 5}
 
-\item{numbuys}{\emph{numeric} vector of daily buys}
+\item{numbuys}{\emph{numeric}: vector of daily buys}
 
-\item{numsells}{\emph{numeric} vector of daily sells}
+\item{numsells}{\emph{numeric}: vector of daily sells}
 
-\item{factorization}{\emph{character} switch between EHO ('EHO') and Lin-Ke ('Lin_Ke') factorization}
+\item{factorization}{\emph{character}: switch between EHO ('EHO') and Lin-Ke ('Lin_Ke') factorization}
 }
 \value{
 \emph{numeric}: likelihood function value
@@ -41,4 +41,3 @@ A computing bias in estimating the probability of informed trading \cr
 \emph{Journal of Financial Markets}, Volume 14, Issue 4, pp. 625 - 640 \cr
 \doi{10.1016/j.finmar.2011.03.001}
 }
-
