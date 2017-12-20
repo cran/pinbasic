@@ -10,12 +10,12 @@ insert_fun = function(name, env = parent.frame()) {
 knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
 
 ## ----pinll, code = formatR::usage(pin_ll), eval = FALSE------------------
-#  pin_ll(param = NULL, numbuys = NULL, numsells = NULL, factorization = c("Lin_Ke", 
-#      "EHO"))
+#  pin_ll(param = NULL, numbuys = NULL, numsells = NULL,
+#      factorization = "Lin_Ke")
 
 ## ----initialvals, code = formatR::usage(initial_vals), eval = FALSE------
-#  initial_vals(numbuys = NULL, numsells = NULL, method = c("Grid", "HAC", "HAC_Ref"), 
-#      length = 5, num_clust = 5, details = FALSE)
+#  initial_vals(numbuys = NULL, numsells = NULL, method = "HAC", length = 5,
+#      num_clust = 5, details = FALSE)
 
 ## ----dataloading---------------------------------------------------------
 data("BSinfrequent")
@@ -33,7 +33,8 @@ summary(BSheavy)
 #  # confidence interval computation enabled
 #  pin_bsheavy <- pin_est(numbuys = BSheavy[,"Buys"],
 #                         numsells = BSheavy[,"Sells"],
-#                         confint = TRUE, ci_control = list(n = 1000, seed = 123))
+#                         confint = TRUE, ci_control = list(n = 1000, seed = 123),
+#                         posterior = TRUE)
 
 ## ----loadpinest, echo = FALSE--------------------------------------------
 pin_bsheavy <- readRDS("../RDSfiles/pin_bsheavy.rds")
@@ -66,29 +67,30 @@ qpin2015 <- readRDS("../RDSfiles/qpin2015.rds")
 
 ## ----qpin2015sum---------------------------------------------------------
 # list of length 4 is returned
-names(qpin2015)
+names(qpin2015[["res"]])
 
 # confidence intervals for all four quarters
-ci_quarters <- lapply(qpin2015, function(x) x$confint)
+ci_quarters <- lapply(qpin2015[["res"]], function(x) x$confint)
 ci_quarters
 
 # each list element has the same structure as results from pin_est function
 # convert matrices to data.frames for prettier output in the vignette
-qpin2015_res <- lapply(qpin2015, function(x) as.data.frame(x$Results))
+qpin2015_res <- lapply(qpin2015[["res"]], function(x) as.data.frame(x$Results))
 
 qpin2015_res[[1]]
 qpin2015_res[[4]]
 
 ## ------------------------------------------------------------------------
 library(ggplot2)
-ggplot(qpin2015)
+ggplot(qpin2015[["res"]])
 
 ## ----simBS---------------------------------------------------------------
 # getting the estimates
 heavy_est <- pin_bsheavy$Results[,"Estimate"]
 
 # simulate buys and sells data
-sim_heavy <- simulateBS(param = heavy_est, seed = 123, ndays = 100)
+set.seed(123)
+sim_heavy <- simulateBS(param = heavy_est, ndays = 100)
 
 # summary of simulated data
 summary(sim_heavy)
@@ -133,7 +135,7 @@ ggplot(post_heavy)
 
 ## ----postdates-----------------------------------------------------------
 # Corresponding parameter estimates
-freq_2015.3 <- qpin2015$'2015.3'$Results[,"Estimate"]
+freq_2015.3 <- qpin2015[["res"]]$'2015.3'$Results[,"Estimate"]
 
 # Subsetting data
 third_quarter <- subset(BSfrequent2015, subset = lubridate::quarter(rownames(BSfrequent2015)) == 3)

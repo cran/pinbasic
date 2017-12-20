@@ -2,7 +2,7 @@ Package: pinbasic
 Title: Fast and Stable Estimation of the Probability of Informed
         Trading (PIN)
 Type: Package
-Version: 1.1.0
+Version: 1.2.0
 Authors@R: person("Andreas", "Recktenwald", email = "a.recktenwald@mx.uni-saarland.de",
     role = c("aut", "cre"))
 Description: Utilities for fast and stable estimation of the probability of 
@@ -30,8 +30,8 @@ Suggests: knitr, rmarkdown, formatR, utils
 URL: https://github.com/anre005/pinbasic/
 BugReports: https://github.com/anre005/pinbasic/issues
 VignetteBuilder: knitr
-Packaged: 2017-03-02 09:26:59 UTC; andi
+Packaged: 2017-12-20 23:27:05 UTC; andi
 Author: Andreas Recktenwald [aut, cre]
 Maintainer: Andreas Recktenwald <a.recktenwald@mx.uni-saarland.de>
 Repository: CRAN
-Date/Publication: 2017-03-02 14:29:56
+Date/Publication: 2017-12-20 23:49:45 UTC

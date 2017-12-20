@@ -5,8 +5,8 @@
 \title{PIN confidence intervals}
 \usage{
 pin_confint(param = NULL, numbuys = NULL, numsells = NULL,
-  lower = rep(0, 5), upper = c(1, 1, rep(Inf, 3)), n = 10000,
-  seed = NULL, level = 0.95, ncores = 1)
+  method = "HAC", lower = rep(0, 5), upper = c(1, 1, rep(Inf, 3)),
+  n = 10000, seed = NULL, level = 0.95, ncores = 1)
 }
 \arguments{
 \item{param}{\emph{numeric}: (named) vector of model parameters
@@ -17,13 +17,16 @@ length must equal 5}
 
 \item{numsells}{\emph{numeric}: vector of daily sells}
 
+\item{method}{\emph{character} Switch between algorithms for generating initial values,
+valid choices are: 'Grid', 'HAC' and 'HAC_Ref'}
+
 \item{lower}{\emph{numeric}: lower bounds for optimization, must have length of 5}
 
 \item{upper}{\emph{numeric}: upper bounds for optimization, must have length of 5}
 
 \item{n}{\emph{integer}: Number of simulation runs, defaults to 10000}
 
-\item{seed}{\emph{interpretted as integer or \code{NULL}}: defaults to \code{NULL}, for more details see \code{\link[base]{set.seed}}}
+\item{seed}{\emph{interpreted as integer or \code{NULL}}: defaults to \code{NULL}, for more details see \link[base]{set.seed}}
 
 \item{level}{\emph{numeric}: Confidence level, defaults to 0.95}
 
@@ -39,6 +42,6 @@ Computes confidence intervals for the probability of informed trading by simulat
 If names are not set for \code{param} or one or more of the vector names do not match the valid choices, they are internally set to
 \code{'alpha'}, \code{'delta'}, \code{'epsilon_b'}, \code{'epsilon_s'}, \code{'mu'} (in this order). \cr
 By default, only one core is utilized in computations (\code{ncores} = 1).
-Confidence intervals can also be calculated in parallel, howwever,
+Confidence intervals can also be calculated in parallel, however,
 this only pays off for large values of \code{n}.
 }
