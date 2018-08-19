@@ -1,3 +1,11 @@
+## pinbasic v1.2.1 (Release Date: 2018-08-19)
+
+### Changes 
+
+* added argument `nlminb_control` to function `qpin`, `pin_est` and `pin_est_core` (see control argument for `stats::nlminb`)
+* Dataset `BSfrequent` is now simulated with the parameter set (0.2, 0.5, 2200, 2000, 800) instead of (0.2, 0.5, 1800, 1700, 600)
+
+
 ## pinbasic v1.2.0 (Release Date: 2017-12-21)
 
 ### Changes 
