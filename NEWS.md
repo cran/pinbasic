@@ -1,3 +1,10 @@
+## pinbasic v1.2.2 (Release Date: 2018-11-18)
+
+### Fixes
+
+* Removed detritus from vignette directory
+
+
 ## pinbasic v1.2.1 (Release Date: 2018-08-19)
 
 ### Changes 
